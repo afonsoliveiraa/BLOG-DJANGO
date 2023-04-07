@@ -1,0 +1,18 @@
+{% extends 'blog/base.html' %}
+
+{% block main %}
+
+<p>Selecione o usuário:</p>
+<form action="{% url 'tornar_staff' %}" method="post" class="mb-3">
+    {% csrf_token %}
+    <select name="user" class="form-select" required>
+        <option value="{{ usuarios.username }}" selected></option>
+        {% for i in usuarios %}
+        <option value="{{ i.id }}"> {{ i.username }}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <button class="btn btn-outline-primary float-end">Salvar</button>
+</form>
+
+{% endblock %}

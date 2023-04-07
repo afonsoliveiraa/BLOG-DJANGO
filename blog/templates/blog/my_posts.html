@@ -1,0 +1,36 @@
+{% extends 'blog/base.html' %}
+
+<!-- Permissões -->
+{% load permission_tags %}
+
+{% block main %}
+{% if my_posts %}
+{% for post in my_posts %}
+<article class="blog-post">
+    <h2 class="blog-post-title mb-1">{{ post.title }}</h2>
+    <p>Tags: {{ post.get_tags }}</p>
+    <p class="blog-post-meta">{{ post.date_create|date:"M, Y" }} <a href="#">{{ post.author }}</a></p>
+    <p>{{ post.summary }}</p>
+    <a href="{% url 'post_detail' post.id %}">
+        <button class="btn btn-small btn-outline-primary">Ler Mais</button>
+    </a>
+    {% if user|can:'criar_posts' %}
+    {% if request.user == post.author %}
+    <a href="{% url 'post_edit' post.id %}" class="float-end pt-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor"
+             class="bi bi-pencil-square" viewBox="0 0 16 16">
+            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+            <path fill-rule="evenodd"
+                  d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+        </svg>
+    </a>
+    {% endif %}
+    {% endif %}
+</article>
+
+<hr>
+{% endfor %}
+{% else %}
+<p>Não existem Post´s criados por esse usuário</p>
+{% endif %}
+{% endblock %}

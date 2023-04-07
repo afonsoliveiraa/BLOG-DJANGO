@@ -1,0 +1,112 @@
+{% extends 'blog/base.html' %}
+
+<!-- Permissões -->
+{% load permission_tags %}
+
+{% block thumb %}
+
+<div class="row mb-2">
+    <div class="col-md-6">
+        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <div class="col p-4 d-flex flex-column position-static">
+                {% if ultimo %}
+                <strong class="d-inline-block mb-2 text-primary">{{ ultimo.get_tags }}</strong>
+                <h3 class="mb-0">{{ ultimo.title }}</h3>
+                <div class="mb-1 text-body-secondary">{{ ultimo.date_create }}</div>
+                <p class="card-text mb-auto">{{ ultimo.summary }}</p>
+                <a href="{% url 'post_detail' ultimo.id %}" class="stretched-link">Continue ...</a>
+                {% else %}
+                <p class="card-text mb-auto">Não existe nenhum registro no banco</p>
+                {% endif %}
+            </div>
+            <div class="col-auto d-none d-lg-block">
+                <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg"
+                     role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice"
+                     focusable="false"><title>Placeholder</title>
+                    <rect width="100%" height="100%" fill="#55595c"/>
+                    <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
+                </svg>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <div class="col p-4 d-flex flex-column position-static">
+                {% if pnt %}
+                <strong class="d-inline-block mb-2 text-primary text-success">{{ pnt.get_tags }}</strong>
+                <h3 class="mb-0 ">{{ pnt.title }}</h3>
+                <div class="mb-1 text-body-secondary">{{ pnt.date_create }}</div>
+                <p class="card-text mb-auto">{{ pnt.summary }}</p>
+                <a href="{% url 'post_detail' pnt.id %}" class="stretched-link">Continue ...</a>
+                {% else %}
+                <p class="card-text mb-auto">Condição criada no caso de não existir registros na tabela Post, o que
+                    ocasionaria em um erro se não fosse tratado</p>
+                {% endif %}
+            </div>
+            <div class="col-auto d-none d-lg-block">
+                <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg"
+                     role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice"
+                     focusable="false"><title>Placeholder</title>
+                    <rect width="100%" height="100%" fill="#55595c"/>
+                    <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
+                </svg>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block main %}
+
+{% for post in posts_page.object_list %}
+<article class="blog-post">
+    <h2 class="blog-post-title">{{ post.title }}</h2>
+    <p>Tags: {{ post.get_tags }}</p>
+    <p class="blog-post-meta">{{ post.date_create|date:"M, Y" }} <a href="#">{{ post.author }}</a></p>
+    <p>{{ post.summary }}</p>
+    <a href="{% url 'post_detail' post.id %}">
+        <button class="btn btn-small btn-outline-primary">Ler Mais</button>
+    </a>
+
+    {% if user|can:'criar_posts' %}
+        {% if request.user == post.author or request.user.role == dono %}
+        <a href="{% url 'post_edit' post.id %}" class="float-end pt-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor"
+                 class="bi bi-pencil-square" viewBox="0 0 16 16">
+                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                <path fill-rule="evenodd"
+                      d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+            </svg>
+        </a>
+        {% endif %}
+    {% endif %}
+
+    {% if user|can:'tornar_staff' %}
+    <a href="{% url 'post_delete' post.id %}" class="float-end pt-2 pe-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" class="bi bi-trash"
+             viewBox="0 0 16 16">
+            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
+            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
+        </svg>
+    </a>
+    {% endif %}
+
+</article>
+<hr>
+{% endfor %}
+
+<nav aria-label="Page navigation example" class="pt-4 pb-5 mb-4">
+    <ul class="pagination">
+        {% if posts_page.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{ posts_page.previous_page_number }}">Anterior</a></li>
+        {% endif %}
+
+        <li class="page-item"><a class="page-link" href="#">{{ posts_page.number }} de {{ posts_page.paginator.num_pages }}</a></li>
+
+        {% if posts_page.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ posts_page.next_page_number }}">Próxima</a></li>
+        {% endif %}
+    </ul>
+    <em>Paginação com tamanho 2, se deseja mudar o tamanho altere a variável 'paginator'</em>
+</nav>
+{% endblock %}

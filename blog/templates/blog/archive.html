@@ -1,0 +1,16 @@
+{% extends 'blog/base.html' %}
+
+{% block main %}
+
+{% for post in posts_archive %}
+<article class="blog-post">
+    <h2 class="blog-post-title mb-1">{{ post.title }}</h2>
+    <p class="blog-post-meta">{{ post.date_create|date:"M, Y" }} <a href="#">{{ post.author }}</a></p>
+    <p>{{ post.summary }}</p>
+</article>
+<a href="{% url 'post_detail' post.id %}">
+    <button class="btn btn-small btn-outline-primary">Ler Mais</button>
+</a>
+<hr>
+{% endfor %}
+{% endblock %}

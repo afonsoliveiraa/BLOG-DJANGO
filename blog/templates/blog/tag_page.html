@@ -1,0 +1,11 @@
+{% extends 'blog/base.html' %}
+
+{% block main %}
+<p>Crie uma nova Tag</p>
+<form action="{% url 'tag_create' %}" method="post" class="mb-3">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-outline-primary mb-5 float-end">Salvar</button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="pt-br" data-bs-theme="auto">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.111.3">
+    <title>Blog</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/blog/">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      .b-example-divider {
+        width: 100%;
+        height: 3rem;
+        background-color: rgba(0, 0, 0, .1);
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+      }
+
+      .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+      }
+
+      .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+      }
+
+      .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .btn-bd-primary {
+        --bd-violet-bg: #712cf9;
+        --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+
+        --bs-btn-font-weight: 600;
+        --bs-btn-color: var(--bs-white);
+        --bs-btn-bg: var(--bd-violet-bg);
+        --bs-btn-border-color: var(--bd-violet-bg);
+        --bs-btn-hover-color: var(--bs-white);
+        --bs-btn-hover-bg: #6528e0;
+        --bs-btn-hover-border-color: #6528e0;
+        --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+        --bs-btn-active-color: var(--bs-btn-hover-color);
+        --bs-btn-active-bg: #5a23c8;
+        --bs-btn-active-border-color: #5a23c8;
+      }
+      .bd-mode-toggle {
+        z-index: 1500;
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </style>
+
+    <!-- Custom styles for this template -->
+    <link href="https://fonts.googleapis.com/css?family=Playfair&#43;Display:700,900&amp;display=swap" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+
+     <!-- Permissões -->
+    {% load permission_tags %}
+</head>
+<body>
+
+<div class="container">
+    <header class="blog-header lh-1 py-3">
+        <div class="row flex-nowrap justify-content-between align-items-center">
+            <div class="col-4 pt-1">
+                <a class="link-secondary" href="#">Subscribe</a>
+            </div>
+            <div class="col-4 text-center">
+                <a class="blog-header-logo text-body-emphasis" href="{% url 'index' %}">Large</a>
+            </div>
+            <div class="col-4 d-flex justify-content-end align-items-center">
+                {% if request.user.is_authenticated %}
+                <p class="pt-3 pe-4">Seja Bem-Vindo, {{ user.username }}</p>
+                <a class="btn btn-sm btn-outline-secondary pt-1" href="{% url 'logout' %}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="19" height="15" fill="currentColor"
+                         class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                              d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0v-2z"/>
+                        <path fill-rule="evenodd"
+                              d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+                    </svg>
+                    Logout</a>
+                {% else %}
+                <a class="btn btn-sm btn-outline-primary py-1" href="{% url 'login' %}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="19" height="15" fill="currentColor"
+                         class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                              d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+                        <path fill-rule="evenodd"
+                              d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+                    </svg>
+                    Entrar</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <div class="nav-scroller py-2 mb-2">
+        <nav class="nav d-flex justify-content-between">
+            {% for tag in tags %}
+            <a class="p-2 link-secondary" href="{% url 'tag' tag %}">{{ tag }}</a>
+            {% endfor %}
+
+        </nav>
+    </div>
+    <p>Tags incluidas de acordo com a tabela 'Tag' do banco, ao selecionar a tag uma função é acionada e filtra os post´s de acordo com a opção</p>
+
+    {% if user|can:'criar_posts' %}
+    <div class="nav-scroller py-2 border-top">
+        <nav class="nav d-flex justify-content-between float-end">
+            <a href="{% url 'post_page' %}" class="p-2 me-3 link-secondary">Criar Post</a>
+            <a href="{% url 'my_posts' request.user.id %}" class="p-2 me-3 link-secondary">Meus Post's</a>
+            {% if user|can:'tornar_staff' %}
+            <a href="{% url 'staff_page' %}" class="p-2 me-3 link-secondary">Tornar Staff</a>
+            {% endif %}
+            {% if user|can:'criar_tags' %}
+            <a href="{% url 'tag_page' %}" class="p-2 link-secondary">Criar Tag</a>
+            {% endif %}
+        </nav>
+    </div>
+    <p class="pt-0 mb-2">Oções disponíveis de acordo com permissões dos usuários</p>
+    {% endif %}
+</div>
+
+<main class="container">
+    <div class="p-4 p-md-5 mb-4 rounded text-bg-dark">
+        <div class="col-md-6 px-0">
+            <h1 class="display-4 fst-italic">Blog Dinânico criado com Django e Bootstrap</h1>
+            <p class="lead my-3">Foco nas permissões e na interatividade</p>
+            <p class="lead mb-0"><a href="#" class="text-white fw-bold">Continue reading...</a></p>
+        </div>
+    </div>
+
+    {% block thumb %}
+
+    {% endblock %}
+
+    <div class="row g-5">
+        <div class="col-md-8">
+            <h3 class="pb-4 mb-4 fst-italic border-bottom">
+                From the Firehose
+            </h3>
+
+            {% block main %}
+
+            {% endblock %}
+        </div>
+
+        <div class="col-md-4">
+            <div class="position-sticky" style="top: 2rem;">
+                <div class="p-4 mb-3 bg-body-tertiary rounded">
+                    <h4 class="fst-italic">About</h4>
+                    <p class="mb-0">Customize this section to tell your visitors a little bit about your
+                        publication,
+                        writers, content, or something else entirely. Totally up to you.</p>
+                </div>
+
+                <div class="p-4">
+                    <h4 class="fst-italic">Archives</h4>
+                    <p class="pt-2">Pesquisa dinâmica dos Post´s pela data de criação, a medida que os post´s forem
+                        criados a data será acrescentada</p>
+                    <ol class="list-unstyled mb-0">
+                        {% for data in datas %}
+                        <li><a href="{% url 'archive' data %}">{{ data|date:"M, Y" }}</a></li>
+                        {% endfor %}
+                    </ol>
+                </div>
+
+                <div class="p-4">
+                    <h4 class="fst-italic">Elsewhere</h4>
+                    <ol class="list-unstyled">
+                        <li><a href="https://www.linkedin.com/in/afonso-oliveira-93816020a/">Linkedin</a></li>
+                        <li><a href="https://github.com/afonsoliveiraa">GitHub</a></li>
+                        <li><a href="https://www.instagram.com/afonsoliveira_/">Instagram</a></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</main>
+
+<footer class="blog-footer">
+    <p>Blog template built for <a href="https://getbootstrap.com/">Bootstrap</a> by <a href="https://twitter.com/mdo">@mdo</a>.
+    </p>
+    <p>
+        <a href="#">Back to top</a>
+    </p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
+
+
+</body>
+</html>
